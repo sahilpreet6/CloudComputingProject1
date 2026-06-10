@@ -1,29 +1,3 @@
-"""
-lambda_function.py
-Task 3 - Cloud-Native Data Processing with a Simulated Serverless Function
-
-Simulates an Azure Function that:
-  1. Reads All_Diets.csv from the Azurite Blob Storage emulator
-  2. Calculates average protein, carbs and fat per diet type
-  3. Stores the results in a simulated NoSQL database (a JSON file)
-
-No real Azure resources are used. Azurite runs locally and stands in for
-Azure Blob Storage.
-
-Prerequisites
--------------
-1) Start Azurite (pick one):
-     docker run -p 10000:10000 -p 10001:10001 \
-       mcr.microsoft.com/azure-storage/azurite
-   or, if installed via npm:
-     azurite --silent
-
-2) Then run this script. It will create the 'datasets' container and
-   upload All_Diets.csv automatically the first time.
-
-Run:  python lambda_function.py
-"""
-
 import os
 import io
 import json

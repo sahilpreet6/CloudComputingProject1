@@ -1,15 +1,3 @@
-"""
-data_analysis.py
-Task 1 - Dataset Analysis and Insights (All_Diets.csv)
-
-This script loads the All_Diets.csv dataset, cleans it, calculates the
-nutritional insights asked for in the project brief, and produces three
-visualizations (bar chart, heatmap, scatter plot).
-
-Run it with:  python data_analysis.py
-"""
-
-import os
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns

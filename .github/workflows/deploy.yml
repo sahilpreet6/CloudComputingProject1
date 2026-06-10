@@ -1,0 +1,36 @@
+name: Diet Analysis CI/CD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-test-docker:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+
+      - name: Install Python dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Check Python script syntax
+        run: |
+          python -m py_compile data_analysis.py
+          python -m py_compile lambda_function.py
+
+      - name: Build Docker image
+        run: |
+          docker build -t diet-analysis .
+
+      - name: Run Docker container
+        run: |
+          docker run --rm diet-analysis
