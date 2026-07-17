@@ -1,0 +1,255 @@
+/* ==========================================================================
+   Nutritional Insights — dashboard styles (matches project UI reference)
+   ========================================================================== */
+:root {
+  --blue: #2f6fe4;
+  --blue-dark: #285fc4;
+  --green: #1a9e63;
+  --green-dark: #16884f;
+  --purple: #7c3aed;
+  --purple-dark: #6d28d9;
+  --bg: #f2f3f5;
+  --surface: #ffffff;
+  --border: #e3e6ea;
+  --text: #111418;
+  --text-soft: #5b6472;
+  --page-btn: #e4e6e9;
+  --shadow: 0 1px 3px rgba(15, 23, 42, 0.08), 0 4px 14px rgba(15, 23, 42, 0.05);
+  --protein: #2f6fe4;
+  --carbs: #f59e0b;
+  --fat: #ef4444;
+}
+
+* { box-sizing: border-box; }
+
+html {
+  /* Lock the page to a light scheme so browser dark-mode can't invert text. */
+  color-scheme: light;
+}
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+/* Explicit dark color on all headings/titles (never rely on inheritance). */
+.section-title,
+.card__title,
+.card__desc,
+.filters__input,
+.filters__select,
+.page-btn { color: var(--text); }
+
+/* ---------------- Header ---------------- */
+.site-header {
+  background: var(--blue);
+  padding: 20px 40px;
+}
+.site-header__title {
+  margin: 0;
+  color: #fff;
+  font-size: 1.7rem;
+  font-weight: 700;
+}
+
+/* ---------------- Layout ---------------- */
+.container {
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 26px 40px 40px;
+}
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 30px 0 18px;
+}
+.section-title:first-child { margin-top: 6px; }
+
+/* ---------------- Chart cards ---------------- */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+.card {
+  background: var(--surface);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  padding: 20px 22px;
+  min-height: 260px;
+  display: flex;
+  flex-direction: column;
+}
+.card__title { margin: 0; font-size: 1.05rem; font-weight: 700; }
+.card__desc { margin: 6px 0 0; font-size: 0.86rem; color: var(--text-soft); }
+.card__chart { position: relative; flex: 1; margin-top: 14px; min-height: 170px; }
+
+/* ---------------- Heatmap ---------------- */
+.heatmap {
+  display: grid;
+  gap: 3px;
+  width: 100%;
+  height: 100%;
+  align-content: center;
+}
+.heatmap__cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 4px 2px;
+  border-radius: 3px;
+  min-height: 26px;
+}
+.heatmap__label {
+  display: flex;
+  align-items: center;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-soft);
+  padding: 0 4px;
+}
+.heatmap__corner { background: transparent; }
+
+/* ---------------- Filters ---------------- */
+.filters {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.filters__input,
+.filters__select {
+  padding: 10px 14px;
+  font-size: 0.9rem;
+  border: 1px solid #c9ced6;
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--text);
+  min-width: 200px;
+}
+.filters__input:focus,
+.filters__select:focus {
+  outline: none;
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(47, 111, 228, 0.15);
+}
+
+/* ---------------- API buttons ---------------- */
+.api {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.btn {
+  border: none;
+  border-radius: 6px;
+  padding: 12px 20px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.08s ease;
+}
+.btn:active { transform: translateY(1px); }
+.btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.btn--blue { background: var(--blue); }
+.btn--blue:hover { background: var(--blue-dark); }
+.btn--green { background: var(--green); }
+.btn--green:hover { background: var(--green-dark); }
+.btn--purple { background: var(--purple); }
+.btn--purple:hover { background: var(--purple-dark); }
+
+.api__status {
+  margin: 14px 0 0;
+  font-size: 0.85rem;
+  color: var(--text-soft);
+  min-height: 1.1em;
+}
+.api__status.is-error { color: #b91c1c; }
+.api__status.is-ok { color: var(--green-dark); }
+
+/* ---------------- Pagination ---------------- */
+.pagination { padding: 6px 0 10px; }
+.pagination__nav {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+.page-btn {
+  border: none;
+  background: var(--page-btn);
+  color: var(--text);
+  border-radius: 6px;
+  padding: 9px 16px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.page-btn:hover { background: #d4d7dc; }
+.page-btn.is-active { background: var(--blue); color: #fff; }
+.page-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.page-ellipsis { display: flex; align-items: center; color: var(--text-soft); padding: 0 2px; }
+
+/* ---------------- Results (recipes / clusters) ---------------- */
+.results { margin-top: 6px; }
+.results__title { font-size: 1.05rem; font-weight: 700; margin: 0 0 12px; }
+.table-wrap {
+  overflow-x: auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+.data-table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+.data-table th, .data-table td {
+  text-align: left;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+.data-table th { background: #f7f8fa; font-weight: 700; color: var(--text); }
+.data-table td { color: var(--text); }
+.data-table tr:last-child td { border-bottom: none; }
+.data-table td.num, .data-table th.num { text-align: right; }
+
+.cluster-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+.cluster-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  padding: 16px 18px;
+}
+.cluster-card h4 { margin: 0 0 8px; font-size: 1rem; color: var(--text); }
+.cluster-card .tags { font-size: 0.82rem; color: var(--text-soft); margin: 0 0 10px; }
+.cluster-card .macros { display: flex; gap: 14px; font-size: 0.84rem; color: var(--text); }
+.cluster-card .macros span b { display: block; font-size: 1.05rem; }
+
+/* ---------------- Footer ---------------- */
+.site-footer {
+  background: var(--blue);
+  color: #fff;
+  text-align: center;
+  padding: 20px;
+  margin-top: 30px;
+}
+.site-footer p { margin: 0; font-size: 0.95rem; }
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+@media (max-width: 1100px) {
+  .cards { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 640px) {
+  .site-header, .container { padding-left: 20px; padding-right: 20px; }
+  .cards { grid-template-columns: 1fr; }
+  .filters__input, .filters__select { min-width: 0; width: 100%; }
+  .api { flex-direction: column; }
+  .btn { width: 100%; }
+}

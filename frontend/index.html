@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light" />
+  <title>Nutritional Insights</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <!-- ===================== HEADER ===================== -->
+  <header class="site-header">
+    <h1 class="site-header__title">Nutritional Insights</h1>
+  </header>
+
+  <main class="container">
+    <!-- ===================== CHARTS ===================== -->
+    <h2 class="section-title">Explore Nutritional Insights</h2>
+    <section class="cards">
+      <article class="card">
+        <h3 class="card__title">Bar Chart</h3>
+        <p class="card__desc">Average macronutrient content by diet type.</p>
+        <div class="card__chart"><canvas id="barChart"></canvas></div>
+      </article>
+
+      <article class="card">
+        <h3 class="card__title">Scatter Plot</h3>
+        <p class="card__desc">Nutrient relationships (e.g., protein vs carbs).</p>
+        <div class="card__chart"><canvas id="scatterChart"></canvas></div>
+      </article>
+
+      <article class="card">
+        <h3 class="card__title">Heatmap</h3>
+        <p class="card__desc">Nutrient correlations.</p>
+        <div class="card__chart"><div id="heatmap" class="heatmap"></div></div>
+      </article>
+
+      <article class="card">
+        <h3 class="card__title">Pie Chart</h3>
+        <p class="card__desc">Recipe distribution by diet type.</p>
+        <div class="card__chart"><canvas id="pieChart"></canvas></div>
+      </article>
+    </section>
+
+    <!-- ===================== FILTERS ===================== -->
+    <h2 class="section-title">Filters and Data Interaction</h2>
+    <section class="filters">
+      <input id="searchInput" class="filters__input" type="text" placeholder="Search by Diet Type" />
+      <select id="dietFilter" class="filters__select">
+        <option value="all">All Diet Types</option>
+      </select>
+    </section>
+
+    <!-- ===================== API BUTTONS ===================== -->
+    <h2 class="section-title">API Data Interaction</h2>
+    <section class="api">
+      <button id="getInsights" class="btn btn--blue" type="button">Get Nutritional Insights</button>
+      <button id="getRecipes" class="btn btn--green" type="button">Get Recipes</button>
+      <button id="getClusters" class="btn btn--purple" type="button">Get Clusters</button>
+    </section>
+    <p id="apiStatus" class="api__status" role="status"></p>
+
+    <!-- ===================== RESULTS (recipes / clusters) ===================== -->
+    <section id="results" class="results" hidden></section>
+
+    <!-- ===================== PAGINATION ===================== -->
+    <h2 class="section-title">Pagination</h2>
+    <section class="pagination">
+      <nav id="pagination" class="pagination__nav" aria-label="Pagination">
+        <button class="page-btn" data-page="prev" type="button">Previous</button>
+        <button class="page-btn is-active" data-page="1" type="button">1</button>
+        <button class="page-btn" data-page="2" type="button">2</button>
+        <button class="page-btn" data-page="next" type="button">Next</button>
+      </nav>
+    </section>
+  </main>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="site-footer">
+    <p>&copy; 2025 Nutritional Insights. All Rights Reserved.</p>
+  </footer>
+</body>
+</html>
