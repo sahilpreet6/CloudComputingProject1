@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light" />
+  <title>Sign in · Nutritional Insights</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__bar"><h1 class="site-header__title">Nutritional Insights</h1></div>
+  </header>
+
+  <main class="login-wrap">
+    <div class="login-card">
+      <h2 class="login-card__title">Sign in to continue</h2>
+      <p class="login-card__subtitle">You need to be signed in to view the dashboard.</p>
+
+      <!-- Google OAuth via Supabase -->
+      <div class="login-oauth">
+        <button id="googleBtn" class="btn-oauth btn-oauth--google" type="button">
+          <span class="btn-oauth__icon" aria-hidden="true">G</span>
+          Continue with Google
+        </button>
+      </div>
+
+      <div class="login-divider"><span>or use email</span></div>
+
+      <!-- Email / password via Supabase -->
+      <form id="emailForm" class="login-form" autocomplete="on">
+        <div class="login-field">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" required placeholder="you@example.com" />
+        </div>
+        <div class="login-field">
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" required minlength="6" placeholder="••••••••" />
+        </div>
+        <div id="loginError" class="login-error" role="alert" hidden></div>
+        <div id="loginInfo" class="login-info" role="status" hidden></div>
+        <div class="login-actions">
+          <button type="submit" id="signInBtn" class="btn btn--blue">Sign in</button>
+          <button type="button" id="toggleMode" class="btn-link">Need an account? Register</button>
+        </div>
+      </form>
+
+      <p class="login-note">
+        Authentication is handled by Supabase (email/password + Google). Passwords are
+        hashed and stored in Supabase's encrypted Postgres database.
+      </p>
+    </div>
+  </main>
+
+  <footer class="site-footer"><p>&copy; 2025 Nutritional Insights. All Rights Reserved.</p></footer>
+
+  <script>
+  (function () {
+    "use strict";
+    var CFG = window.SUPABASE_CONFIG || {};
+    var errBox = document.getElementById("loginError");
+    var infoBox = document.getElementById("loginInfo");
+    var form = document.getElementById("emailForm");
+    var signInBtn = document.getElementById("signInBtn");
+    var toggle = document.getElementById("toggleMode");
+    var googleBtn = document.getElementById("googleBtn");
+    var mode = "login"; // or "register"
+
+    if (!CFG.url || !CFG.anonKey || typeof window.supabase === "undefined") {
+      showError("Supabase is not configured yet. Add your project URL and anon key in config.js.");
+      signInBtn.disabled = true; googleBtn.disabled = true;
+      return;
+    }
+
+    var client = window.supabase.createClient(CFG.url, CFG.anonKey);
+    var REDIRECT = window.location.origin + "/";
+
+    // Already signed in? Go straight to the dashboard.
+    client.auth.getSession().then(function (res) {
+      if (res.data && res.data.session) window.location.replace("/");
+    });
+
+    googleBtn.addEventListener("click", async function () {
+      hideMsgs();
+      var out = await client.auth.signInWithOAuth({
+        provider: "google",
+        options: { redirectTo: REDIRECT },
+      });
+      if (out.error) showError("Google sign-in failed: " + out.error.message);
+    });
+
+    toggle.addEventListener("click", function () {
+      mode = mode === "login" ? "register" : "login";
+      signInBtn.textContent = mode === "login" ? "Sign in" : "Create account";
+      toggle.textContent = mode === "login" ? "Need an account? Register" : "Have an account? Sign in";
+      hideMsgs();
+    });
+
+    form.addEventListener("submit", async function (e) {
+      e.preventDefault();
+      hideMsgs();
+      signInBtn.disabled = true;
+      var email = document.getElementById("email").value.trim();
+      var password = document.getElementById("password").value;
+      try {
+        if (mode === "login") {
+          var login = await client.auth.signInWithPassword({ email: email, password: password });
+          if (login.error) throw login.error;
+          window.location.replace("/");
+        } else {
+          var reg = await client.auth.signUp({ email: email, password: password });
+          if (reg.error) throw reg.error;
+          if (reg.data.session) {
+            window.location.replace("/"); // auto-confirmed
+          } else {
+            showInfo("Account created. Check your email to confirm, then sign in.");
+            mode = "login";
+            signInBtn.textContent = "Sign in";
+            toggle.textContent = "Need an account? Register";
+          }
+        }
+      } catch (err) {
+        showError((mode === "login" ? "Sign in" : "Registration") + " failed: " + (err.message || err));
+      } finally {
+        signInBtn.disabled = false;
+      }
+    });
+
+    function showError(m) { errBox.textContent = m; errBox.hidden = false; infoBox.hidden = true; }
+    function showInfo(m) { infoBox.textContent = m; infoBox.hidden = false; errBox.hidden = true; }
+    function hideMsgs() { errBox.hidden = true; infoBox.hidden = true; }
+  })();
+  </script>
+</body>
+</html>

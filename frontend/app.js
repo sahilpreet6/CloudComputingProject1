@@ -350,13 +350,60 @@ const ENDPOINTS = {
   const fmtMs = (ms) => Math.round(ms) + " ms";
   function disableApi(v) { ["getInsights", "getRecipes", "getClusters"].forEach((id) => { $(id).disabled = v; }); }
 
+  /* --------------------------- Auth (Supabase) --------------------------- */
+  let sbClient = null;
+
+  function getClient() {
+    if (sbClient) return sbClient;
+    const cfg = window.SUPABASE_CONFIG || {};
+    if (!cfg.url || !cfg.anonKey || typeof window.supabase === "undefined") return null;
+    sbClient = window.supabase.createClient(cfg.url, cfg.anonKey);
+    return sbClient;
+  }
+
+  // Returns the signed-in Supabase user, or null if anonymous.
+  async function getUser() {
+    const client = getClient();
+    if (!client) return null;
+    try {
+      const { data } = await client.auth.getSession();
+      return (data && data.session && data.session.user) || null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function displayName(user) {
+    const m = user.user_metadata || {};
+    return m.full_name || m.name || m.user_name || user.email || "Account";
+  }
+
+  function showUser(user) {
+    const name = displayName(user);
+    $("userName").textContent = name;
+    const av = $("userAvatar");
+    if (av) av.textContent = (name.trim()[0] || "?").toUpperCase();
+    $("userBox").hidden = false;
+
+    $("logoutBtn").addEventListener("click", async () => {
+      const client = getClient();
+      if (client) await client.auth.signOut();
+      window.location.replace("/login.html");
+    });
+  }
+
   /* --------------------------- Init --------------------------- */
   function onFilterChange() {
     if (insights) renderCharts();
     if (activePanel === "recipes") loadRecipes(1);
   }
 
-  function init() {
+  async function init() {
+    // Gate the dashboard: only signed-in users continue; others go to login.
+    const user = await getUser();
+    if (!user) { window.location.replace("/login.html"); return; }
+    showUser(user);
+
     $("getInsights").addEventListener("click", loadInsights);
     $("getRecipes").addEventListener("click", () => loadRecipes(1));
     $("getClusters").addEventListener("click", loadClusters);

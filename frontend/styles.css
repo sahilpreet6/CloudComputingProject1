@@ -45,7 +45,15 @@ html, body {
 /* ---------------- Header ---------------- */
 .site-header {
   background: var(--blue);
-  padding: 20px 40px;
+  padding: 18px 40px;
+}
+.site-header__bar {
+  max-width: 1500px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
 }
 .site-header__title {
   margin: 0;
@@ -53,6 +61,147 @@ html, body {
   font-size: 1.7rem;
   font-weight: 700;
 }
+
+/* logged-in user + logout (top right) */
+.user-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.user-box__avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+.user-box__name {
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.95rem;
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.user-box__logout {
+  color: var(--blue);
+  background: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 7px 14px;
+  border-radius: 6px;
+  transition: background 0.15s ease;
+}
+.user-box__logout:hover { background: #eef2ff; }
+
+/* ---------------- Login page ---------------- */
+.login-wrap {
+  max-width: 460px;
+  margin: 48px auto;
+  padding: 0 20px;
+}
+.login-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  padding: 32px 30px;
+}
+.login-card__title { margin: 0; font-size: 1.5rem; font-weight: 700; color: var(--text); }
+.login-card__subtitle { margin: 8px 0 24px; color: var(--text-soft); font-size: 0.92rem; }
+
+.login-oauth { display: flex; flex-direction: column; gap: 12px; }
+.btn-oauth {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  color: #fff;
+  transition: opacity 0.15s ease;
+}
+.btn-oauth:hover { opacity: 0.92; }
+.btn-oauth__icon { font-size: 1.1rem; line-height: 1; }
+.btn-oauth--github { background: #24292f; }
+.btn-oauth--ms { background: #2f6fe4; }
+.btn-oauth--google { background: #ffffff; color: #3c4043; border: 1px solid #dadce0; }
+.btn-oauth--google:hover { background: #f7f8fa; opacity: 1; }
+.btn-oauth--google .btn-oauth__icon {
+  font-weight: 700;
+  color: #4285f4;
+}
+
+.login-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: var(--text-soft);
+  font-size: 0.82rem;
+  margin: 22px 0;
+}
+.login-divider::before, .login-divider::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid var(--border);
+}
+.login-divider span { padding: 0 12px; }
+
+.login-form { display: flex; flex-direction: column; gap: 14px; }
+.login-field { display: flex; flex-direction: column; gap: 6px; }
+.login-field label { font-size: 0.82rem; font-weight: 600; color: var(--text); }
+.login-field input {
+  padding: 11px 13px;
+  font-size: 0.92rem;
+  border: 1px solid #c9ced6;
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+}
+.login-field input:focus {
+  outline: none;
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(47, 111, 228, 0.15);
+}
+.login-error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+}
+.login-info {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  color: #1e40af;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+}
+.login-actions { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.btn-link {
+  background: none;
+  border: none;
+  color: var(--blue);
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 0;
+}
+.btn-link:hover { text-decoration: underline; }
+.login-note { margin: 22px 0 0; font-size: 0.78rem; color: var(--text-soft); line-height: 1.5; }
+.login-note code { background: #eef1f5; padding: 1px 5px; border-radius: 4px; font-size: 0.75rem; }
 
 /* ---------------- Layout ---------------- */
 .container {
